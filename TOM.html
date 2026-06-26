@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI COE — Target Operating Model</title>
+<style>
+  :root {
+    --primary: #0d2137;
+    --primary2: #163352;
+    --accent: #0f6cbd;
+    --accent2: #1c86e0;
+    --teal: #0e7c7b;
+    --teal-bg: #e6f4f4;
+    --gold: #9a6c00;
+    --gold-bg: #fef8e7;
+    --purple: #5a2d82;
+    --purple-bg: #f3ecfb;
+    --red: #c0392b;
+    --red-bg: #fdf0ee;
+    --green: #1e6b3c;
+    --green-bg: #eaf5ee;
+    --bg: #f5f7fa;
+    --surface: #ffffff;
+    --border: #d1d9e6;
+    --text: #1a2333;
+    --muted: #5a6476;
+    --tag-bg: #e4ecf7;
+    --tag-text: #0f6cbd;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14.5px;
+    line-height: 1.75;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: linear-gradient(135deg, #0d2137 0%, #163352 45%, #0f6cbd 100%);
+    color: #fff;
+    padding: 60px 72px 52px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::before {
+    content: '';
+    position: absolute;
+    right: -120px; bottom: -120px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+  }
+  .cover::after {
+    content: '';
+    position: absolute;
+    right: 60px; top: 60px;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+  }
+  .cover-eyebrow {
+    font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+    color: #90caf9; font-weight: 600; margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 40px; font-weight: 800; line-height: 1.15;
+    margin-bottom: 8px; letter-spacing: -0.5px;
+  }
+  .cover h1 em { color: #64b5f6; font-style: normal; }
+  .cover .tagline { font-size: 16px; color: rgba(255,255,255,0.72); margin-bottom: 44px; }
+  .cover-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 44px; }
+  .pill {
+    background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 20px; padding: 5px 14px; font-size: 12px; color: #e3f2fd;
+    font-weight: 500;
+  }
+  .cover-meta {
+    display: flex; gap: 36px; flex-wrap: wrap;
+    border-top: 1px solid rgba(255,255,255,0.15); padding-top: 28px;
+  }
+  .meta-item { display: flex; flex-direction: column; gap: 3px; }
+  .meta-label { font-size: 10px; color: #90caf9; letter-spacing: 1.5px; text-transform: uppercase; }
+  .meta-value { font-size: 13px; color: #fff; font-weight: 500; }
+
+  /* ── PAGE LAYOUT ── */
+  .page { max-width: 1020px; margin: 0 auto; padding: 52px 28px 72px; }
+
+  /* ── TOC ── */
+  .toc {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    padding: 32px 36px; margin-bottom: 52px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0 32px;
+  }
+  .toc-heading {
+    grid-column: 1/-1; font-size: 11px; letter-spacing: 2.5px;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 20px; font-weight: 700;
+  }
+  .toc-col ol { padding-left: 18px; }
+  .toc-col li { margin: 5px 0; }
+  .toc-col a { color: var(--accent); text-decoration: none; font-size: 13.5px; font-weight: 500; }
+  .toc-col a:hover { text-decoration: underline; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 60px; }
+  .section-hd {
+    display: flex; align-items: center; gap: 14px;
+    border-bottom: 2px solid var(--border); padding-bottom: 14px; margin-bottom: 28px;
+  }
+  .sec-num {
+    background: var(--tag-bg); color: var(--accent);
+    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+    padding: 4px 10px; border-radius: 4px; flex-shrink: 0;
+  }
+  .section h2 { font-size: 23px; font-weight: 800; color: var(--primary); letter-spacing: -0.3px; }
+  .section h3 {
+    font-size: 16px; font-weight: 700; color: var(--primary);
+    margin: 30px 0 12px; padding-left: 12px; border-left: 3px solid var(--accent);
+  }
+  .section h4 { font-size: 14px; font-weight: 700; color: var(--primary); margin: 20px 0 8px; }
+  .section p { margin-bottom: 14px; }
+  .section ul, .section ol { padding-left: 22px; margin-bottom: 14px; }
+  .section li { margin: 5px 0; }
+
+  /* ── CALLOUTS ── */
+  .callout {
+    display: flex; gap: 14px; border-radius: 10px; padding: 18px 22px; margin: 18px 0;
+  }
+  .callout-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .callout-body { flex: 1; }
+  .callout-body strong { display: block; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+  .callout-body p { margin: 0; font-size: 13.5px; line-height: 1.65; }
+  .callout.blue { background: #e8f0fb; border-left: 4px solid var(--accent); }
+  .callout.blue .callout-body strong { color: var(--accent); }
+  .callout.teal { background: var(--teal-bg); border-left: 4px solid var(--teal); }
+  .callout.teal .callout-body strong { color: var(--teal); }
+  .callout.gold { background: var(--gold-bg); border-left: 4px solid var(--gold); }
+  .callout.gold .callout-body strong { color: var(--gold); }
+  .callout.purple { background: var(--purple-bg); border-left: 4px solid var(--purple); }
+  .callout.purple .callout-body strong { color: var(--purple); }
+  .callout.warn { background: var(--red-bg); border-left: 4px solid var(--red); }
+  .callout.warn .callout-body strong { color: var(--red); }
+  .callout.green { background: var(--green-bg); border-left: 4px solid var(--green); }
+  .callout.green .callout-body strong { color: var(--green); }
+
+  /* ── CARDS ── */
+  .grid { display: grid; gap: 16px; margin: 18px 0; }
+  .g2 { grid-template-columns: 1fr 1fr; }
+  .g3 { grid-template-columns: repeat(3, 1fr); }
+  .g4 { grid-template-columns: repeat(4, 1fr); }
+  .card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    padding: 20px 22px;
+  }
+  .card.top-blue { border-top: 3px solid var(--accent); }
+  .card.top-teal { border-top: 3px solid var(--teal); }
+  .card.top-gold { border-top: 3px solid var(--gold); }
+  .card.top-purple { border-top: 3px solid var(--purple); }
+  .card.top-green { border-top: 3px solid var(--green); }
+  .card.top-red { border-top: 3px solid var(--red); }
+  .card-label { font-size: 10px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+  .card-title { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+  .card p { font-size: 13.5px; color: var(--muted); margin: 0; }
+  .card ul { padding-left: 18px; margin: 6px 0 0; }
+  .card li { font-size: 13.5px; color: var(--muted); margin: 4px 0; }
+
+  /* ── HK HIGHLIGHT BOX ── */
+  .hk-box {
+    background: linear-gradient(135deg, #fff8e1 0%, #fff3cd 100%);
+    border: 2px solid #f9a825;
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin: 20px 0;
+    position: relative;
+  }
+  .hk-box::before {
+    content: '🏙️ HK Region Focus';
+    position: absolute; top: -12px; left: 20px;
+    background: #f9a825; color: #fff;
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    padding: 3px 12px; border-radius: 4px;
+  }
+  .hk-box h4 { color: #6d4c00; margin-bottom: 8px; }
+  .hk-box p, .hk-box li { font-size: 13.5px; color: #5a3e00; }
+  .hk-box ul { padding-left: 18px; margin-top: 6px; }
+
+  /* ── ORG CHART ── */
+  .org-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px 24px; margin: 18px 0; }
+  .org-node {
+    border-radius: 8px; padding: 12px 18px; text-align: center; margin: 0 auto;
+  }
+  .org-node.global {
+    background: var(--primary); color: #fff;
+    max-width: 420px; margin-bottom: 0;
+  }
+  .org-node.global .n-title { font-size: 15px; font-weight: 700; }
+  .org-node.global .n-sub { font-size: 12px; color: rgba(255,255,255,0.7); margin-top: 3px; }
+  .org-node.region {
+    background: var(--accent); color: #fff;
+    max-width: 380px;
+  }
+  .org-node.region .n-title { font-size: 14px; font-weight: 700; }
+  .org-node.region .n-sub { font-size: 12px; color: rgba(255,255,255,0.75); margin-top: 3px; }
+  .org-node.team {
+    background: var(--surface); border: 1.5px solid var(--border);
+    max-width: 100%;
+  }
+  .org-node.team .n-title { font-size: 13px; font-weight: 700; color: var(--primary); }
+  .org-node.team .n-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .org-connector { text-align: center; color: var(--border); font-size: 22px; line-height: 1.2; margin: 2px 0; }
+  .org-row { display: grid; gap: 12px; }
+  .org-row.r3 { grid-template-columns: repeat(3, 1fr); }
+  .org-row.r2 { grid-template-columns: 1fr 1fr; }
+  .org-row.r4 { grid-template-columns: repeat(4, 1fr); }
+  .org-row.center { display: flex; justify-content: center; }
+  .loc-badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 3px; margin-top: 4px; letter-spacing: 0.5px;
+  }
+  .loc-hk { background: #fff3cd; color: #6d4c00; }
+  .loc-sg { background: #e8f5e9; color: #1e6b3c; }
+  .loc-cn { background: #fce4ec; color: #880e4f; }
+  .loc-in { background: #e3f2fd; color: #0d47a1; }
+  .loc-gl { background: var(--tag-bg); color: var(--tag-text); }
+
+  /* ── LIFECYCLE STRIP ── */
+  .lifecycle {
+    display: flex; align-items: stretch; margin: 18px 0; gap: 0;
+    background: var(--surface); border: 1px solid var(--border); border-radius: 10px;
+    overflow: hidden;
+  }
+  .lc-stage {
+    flex: 1; padding: 16px 14px; position: relative; text-align: center;
+  }
+  .lc-stage:not(:last-child)::after {
+    content: '▶';
+    position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+    color: var(--border); font-size: 16px; z-index: 2;
+  }
+  .lc-stage:nth-child(1) { background: #e8f0fb; }
+  .lc-stage:nth-child(2) { background: #e6f4f4; }
+  .lc-stage:nth-child(3) { background: #fef8e7; }
+  .lc-stage:nth-child(4) { background: #f3ecfb; }
+  .lc-stage:nth-child(5) { background: #eaf5ee; }
+  .lc-icon { font-size: 20px; margin-bottom: 5px; }
+  .lc-name { font-size: 12px; font-weight: 700; color: var(--primary); }
+  .lc-desc { font-size: 11px; color: var(--muted); margin-top: 3px; line-height: 1.4; }
+
+  /* ── LOCATION STRATEGY ── */
+  .location-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+  .loc-card {
+    border-radius: 10px; padding: 24px 24px; position: relative; overflow: hidden;
+  }
+  .loc-card.china { background: linear-gradient(135deg, #fce4ec, #fff); border: 2px solid #f48fb1; }
+  .loc-card.india { background: linear-gradient(135deg, #e3f2fd, #fff); border: 2px solid #90caf9; }
+  .loc-card .flag { font-size: 28px; margin-bottom: 10px; }
+  .loc-card .loc-title { font-size: 17px; font-weight: 800; margin-bottom: 4px; }
+  .loc-card.china .loc-title { color: #880e4f; }
+  .loc-card.india .loc-title { color: #0d47a1; }
+  .loc-card .loc-role { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+  .loc-card.china .loc-role { color: #c2185b; }
+  .loc-card.india .loc-role { color: #1565c0; }
+  .loc-card ul { padding-left: 18px; margin: 0; }
+  .loc-card li { font-size: 13.5px; margin: 5px 0; }
+  .loc-card.china li { color: #4a0020; }
+  .loc-card.india li { color: #0a2a5a; }
+
+  /* ── TABLES ── */
+  .tbl { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 13.5px; }
+  .tbl th { background: var(--primary); color: #fff; padding: 10px 14px; text-align: left; font-size: 12px; font-weight: 600; letter-spacing: 0.3px; }
+  .tbl td { padding: 10px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .tbl tr:nth-child(even) td { background: var(--bg); }
+  .tbl tr:hover td { background: #eef4ff; }
+  .tbl .cat { font-weight: 700; color: var(--accent); }
+  .badge { display: inline-block; padding: 2px 9px; border-radius: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.3px; }
+  .b-blue { background: var(--tag-bg); color: var(--tag-text); }
+  .b-gold { background: var(--gold-bg); color: var(--gold); }
+  .b-green { background: var(--green-bg); color: var(--green); }
+  .b-red { background: var(--red-bg); color: var(--red); }
+  .b-purple { background: var(--purple-bg); color: var(--purple); }
+  .b-teal { background: var(--teal-bg); color: var(--teal); }
+
+  /* ── RACI ── */
+  .raci-r { font-weight: 700; color: #c62828; }
+  .raci-a { font-weight: 700; color: #1565c0; }
+  .raci-c { font-weight: 600; color: #2e7d32; }
+  .raci-i { color: var(--muted); }
+
+  /* ── USE CASE FACTORY ── */
+  .factory {
+    background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+    overflow: hidden; margin: 18px 0;
+  }
+  .factory-hd {
+    background: var(--primary); color: #fff; padding: 14px 22px;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.3px;
+  }
+  .factory-body { padding: 20px 22px; }
+  .pipeline {
+    display: flex; align-items: center; gap: 0; margin: 12px 0;
+  }
+  .pipe-step {
+    flex: 1; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 6px; padding: 10px 12px; text-align: center; position: relative;
+  }
+  .pipe-step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -14px; top: 50%; transform: translateY(-50%);
+    color: var(--accent); font-size: 16px; font-weight: 700; z-index: 2;
+  }
+  .pipe-name { font-size: 12px; font-weight: 700; color: var(--primary); }
+  .pipe-sub { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .pipe-step.hl { background: var(--tag-bg); border-color: var(--accent); }
+  .pipe-step.hl .pipe-name { color: var(--accent); }
+
+  /* ── LANGUAGE STRATEGY ── */
+  .lang-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 18px 0; }
+  .lang-card { border-radius: 10px; padding: 20px 22px; }
+  .lang-card.en { background: #f0f4ff; border: 1.5px solid #aec6f6; }
+  .lang-card.zh { background: #fff8e1; border: 1.5px solid #ffe082; }
+  .lang-card .lang-flag { font-size: 22px; margin-bottom: 8px; }
+  .lang-card .lang-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; }
+  .lang-card.en .lang-title { color: #1a3a8a; }
+  .lang-card.zh .lang-title { color: #7a5000; }
+  .lang-card ul { padding-left: 18px; margin: 0; }
+  .lang-card li { font-size: 13px; margin: 4px 0; }
+
+  /* ── ROADMAP ── */
+  .roadmap { margin: 18px 0; }
+  .rm-phase { display: flex; gap: 0; }
+  .rm-phase:last-child .rm-line { display: none; }
+  .rm-ind { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; width: 40px; }
+  .rm-dot { width: 18px; height: 18px; border-radius: 50%; border: 3px solid var(--accent); background: var(--surface); flex-shrink: 0; margin-top: 4px; }
+  .rm-dot.filled { background: var(--accent); }
+  .rm-line { width: 2px; flex: 1; background: var(--border); margin: 4px 0; min-height: 20px; }
+  .rm-content { flex: 1; padding: 0 0 32px 14px; }
+  .rm-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 3px; }
+  .rm-title { font-size: 16px; font-weight: 700; color: var(--primary); margin-bottom: 10px; }
+  .rm-items { display: flex; flex-wrap: wrap; gap: 8px; }
+  .rm-item { background: var(--tag-bg); color: var(--tag-text); border-radius: 6px; padding: 4px 12px; font-size: 12.5px; font-weight: 500; }
+  .rm-item.hk { background: #fff3cd; color: #6d4c00; }
+
+  /* ── TWO-COL ── */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 18px 0; }
+  .col-in { background: var(--green-bg); border: 1px solid #a5d6a7; border-radius: 10px; padding: 18px 20px; }
+  .col-out { background: var(--red-bg); border: 1px solid #ef9a9a; border-radius: 10px; padding: 18px 20px; }
+  .col-in h4 { color: var(--green); margin-bottom: 8px; }
+  .col-out h4 { color: var(--red); margin-bottom: 8px; }
+  .col-in li, .col-out li { font-size: 13.5px; margin: 5px 0; }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    border-top: 1px solid var(--border); margin-top: 64px; padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    color: var(--muted); font-size: 12px;
+  }
+
+  @media (max-width: 760px) {
+    .g2, .g3, .g4, .grid.g2, .org-row.r3, .org-row.r4, .org-row.r2,
+    .location-grid, .lang-grid, .two-col, .toc { grid-template-columns: 1fr; }
+    .cover { padding: 36px 20px 32px; }
+    .cover h1 { font-size: 28px; }
+    .page { padding: 28px 14px 48px; }
+    .lifecycle { flex-direction: column; }
+    .lc-stage:not(:last-child)::after { content: '▼'; right: auto; left: 50%; top: auto; bottom: -12px; transform: translateX(-50%); }
+    .pipeline { flex-direction: column; }
+    .pipe-step:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ COVER ══ -->
+<div class="cover">
+  <div class="cover-eyebrow">Multinational Insurance Group · AI Strategy</div>
+  <h1>AI Centre of Excellence<br><em>Target Operating Model</em></h1>
+  <p class="tagline">Global Centralised Delivery · Federated Governance · HK Region Deep-Dive</p>
+  <div class="cover-pills">
+    <span class="pill">🌐 Global COE — Centralised Delivery</span>
+    <span class="pill">🏙️ HK Region Focus (HK · TW · MO)</span>
+    <span class="pill">🇨🇳 China — Innovation Hub</span>
+    <span class="pill">🇮🇳 India — Scale Delivery Hub</span>
+    <span class="pill">⚡ Use Case Factory Model</span>
+    <span class="pill">v0.1 Draft — June 2026</span>
+  </div>
+  <div class="cover-meta">
+    <div class="meta-item"><span class="meta-label">Document Type</span><span class="meta-value">Target Operating Model (TOM)</span></div>
+    <div class="meta-item"><span class="meta-label">Regions</span><span class="meta-value">HK Region (HK/TW/MO) + SG Region</span></div>
+    <div class="meta-item"><span class="meta-label">Version</span><span class="meta-value">v0.1 Draft</span></div>
+    <div class="meta-item"><span class="meta-label">Date</span><span class="meta-value">June 2026</span></div>
+    <div class="meta-item"><span class="meta-label">Status</span><span class="meta-value">For Stakeholder Review</span></div>
+  </div>
+</div>
+
+<!-- ══ BODY ══ -->
+<div class="page">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-heading">Contents</div>
+    <div class="toc-col">
+      <ol>
+        <li><a href="#s1">TOM Overview &amp; Strategic Context</a></li>
+        <li><a href="#s2">COE Positioning — Global Centralised Delivery</a></li>
+        <li><a href="#s3">Organisational Structure</a></li>
+        <li><a href="#s4">End-to-End Delivery Lifecycle</a></li>
+        <li><a href="#s5">Use Case Factory Model</a></li>
+        <li><a href="#s6">Location Strategy — China &amp; India</a></li>
+      </ol>
+    </div>
+    <div class="toc-col">
+      <ol start="7">
+        <li><a href="#s7">HK Region Deep-Dive</a></li>
+        <li><a href="#s8">Global + Local Governance &amp; Standards</a></li>
+        <li><a href="#s9">Language &amp; Localisation Strategy</a></li>
+        <li><a href="#s10">Technology &amp; Platform Architecture</a></li>
+        <li><a href="#s11">Transition Roadmap</a></li>
+        <li><a href="#s12">Appendix: Glossary &amp; References</a></li>
+      </ol>
+    </div>
+  </div>
+
+  <!-- ══ S1: TOM Overview ══ -->
+  <div class="section" id="s1">
+    <div class="section-hd"><span class="sec-num">01</span><h2>TOM Overview &amp; Strategic Context</h2></div>
+
+    <p>This Target Operating Model (TOM) defines <strong>how the AI Centre of Excellence (AI COE) will operate</strong> as the Group's global centralised AI delivery and governance engine. It translates the COE Charter mandate into a concrete organisational design, delivery mechanism, and operating rhythm.</p>
+
+    <div class="callout blue">
+      <span class="callout-icon">🎯</span>
+      <div class="callout-body">
+        <strong>TOM Design Intent</strong>
+        <p>The TOM is designed to answer one primary question: <em>Given a growing portfolio of identified AI use cases across two regions, how do we design, build, reuse, and uniformly manage these use cases at speed and scale — while establishing the governance discipline the Group currently lacks?</em></p>
+      </div>
+    </div>
+
+    <h3>1.1 Key Design Drivers</h3>
+    <div class="grid g2">
+      <div class="card top-blue">
+        <div class="card-label">Driver 1</div>
+        <div class="card-title">⚡ Speed to Value via Use Case Portfolio</div>
+        <p>Multiple AI use cases already identified. The TOM must enable rapid sequencing, parallel execution, and component reuse — not slow down delivery with process overhead.</p>
+      </div>
+      <div class="card top-teal">
+        <div class="card-label">Driver 2</div>
+        <div class="card-title">🏛️ Governance Without Bureaucracy</div>
+        <p>HK Region has the highest AI maturity but lacks unified governance. The TOM must introduce governance as an enabler, not a gate-keeper — lightweight enough to accelerate, robust enough to satisfy regulators.</p>
+      </div>
+      <div class="card top-gold">
+        <div class="card-label">Driver 3</div>
+        <div class="card-title">🌐 Global Standards, Local Execution</div>
+        <p>A Global+Local model: COE owns the standards framework; regions own execution. HK Region is the pilot market where the model is first proven, then propagated to SG Region and beyond.</p>
+      </div>
+      <div class="card top-purple">
+        <div class="card-label">Driver 4</div>
+        <div class="card-title">🗣️ Language-Aware Delivery</div>
+        <p>HK Region operates predominantly in Chinese (Traditional). The TOM must structurally account for language — in tooling, documentation, regulatory engagement, and talent — to avoid localisation becoming a chronic bottleneck.</p>
+      </div>
+    </div>
+
+    <h3>1.2 Current State vs. Target State</h3>
+    <table class="tbl">
+      <thead><tr><th>Dimension</th><th>Current State</th><th>Target State (TOM)</th></tr></thead>
+      <tbody>
+        <tr><td class="cat">COE Role</td><td>Standards &amp; advisory layer; no direct delivery ownership</td><td>Global centralised delivery layer — full lifecycle ownership</td></tr>
+        <tr><td class="cat">Delivery Lifecycle</td><td>Project-based; ends at go-live</td><td>End-to-end: Demand Assessment → Design → Build → Run (ongoing Ops)</td></tr>
+        <tr><td class="cat">Use Case Execution</td><td>One-off, siloed per project</td><td>Factory model: standardised pipeline, shared components, reuse-first</td></tr>
+        <tr><td class="cat">Governance</td><td>Absent in HK Region; informal globally</td><td>Global+Local: Group-level standards, region-adapted implementation</td></tr>
+        <tr><td class="cat">Location Strategy</td><td>Resources co-located with regions</td><td>Bifurcated: China (Innovation Hub) + India (Scale Delivery Hub)</td></tr>
+        <tr><td class="cat">Language</td><td>Ad hoc; English standards applied to ZH-speaking teams</td><td>Structured bilingual model; ZH-first artefacts for HK Region</td></tr>
+        <tr><td class="cat">HK Region Maturity</td><td>Highest maturity, ungoverned</td><td>Governed pilot region; template for global rollout</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ S2: COE Positioning ══ -->
+  <div class="section" id="s2">
+    <div class="section-hd"><span class="sec-num">02</span><h2>COE Positioning — Global Centralised Delivery Layer</h2></div>
+
+    <div class="callout teal">
+      <span class="callout-icon">📌</span>
+      <div class="callout-body">
+        <strong>Positioning Statement</strong>
+        <p>The AI COE is the <strong>single global accountable entity</strong> for AI delivery across the Group. It owns the full AI product lifecycle — from demand intake and solution design through to build, deploy, and continuous operations. Business units and Digital Teams remain the demand originators and product owners; the COE is the delivery and capability engine that serves them.</p>
+      </div>
+    </div>
+
+    <h3>2.1 What "Centralised Delivery" Means in Practice</h3>
+    <div class="grid g3">
+      <div class="card top-blue">
+        <div class="card-label">Centralised</div>
+        <div class="card-title">📐 Standards &amp; Architecture</div>
+        <p>One set of AI development standards, platform architecture, and security/governance frameworks that apply globally. No regional variants unless explicitly carved out.</p>
+      </div>
+      <div class="card top-teal">
+        <div class="card-label">Centralised</div>
+        <div class="card-title">🔧 Platform &amp; Toolchain</div>
+        <p>Single shared AI/ML platform (MLOps + LLMOps), model registry, feature store, and monitoring stack — multi-region deployed but centrally managed by COE.</p>
+      </div>
+      <div class="card top-purple">
+        <div class="card-label">Centralised</div>
+        <div class="card-title">👥 Talent Pool &amp; Allocation</div>
+        <p>AI talent (Data Scientists, ML Engineers, AI Architects) sits in the COE globally. Allocation to use cases is managed centrally via a capacity and demand planning process.</p>
+      </div>
+    </div>
+    <div class="grid g2">
+      <div class="card top-gold">
+        <div class="card-label">Localised</div>
+        <div class="card-title">🏙️ Demand &amp; Product Ownership</div>
+        <p>Business requirements, prioritisation decisions, and product ownership remain with regional business and Digital Teams. They are the "clients" of the COE.</p>
+      </div>
+      <div class="card top-green">
+        <div class="card-label">Localised</div>
+        <div class="card-title">⚖️ Regulatory &amp; Language Adaptation</div>
+        <p>Compliance interpretation, regulatory engagement, and language-specific artefacts are handled locally within COE's regional embedded function — not centralised away.</p>
+      </div>
+    </div>
+
+    <h3>2.2 Relationship Model: COE ↔ Digital Team ↔ Business</h3>
+    <table class="tbl">
+      <thead><tr><th>Activity</th><th>Business / BU</th><th>Digital Team</th><th>AI COE</th></tr></thead>
+      <tbody>
+        <tr><td>Identify AI opportunity / use case</td><td class="raci-r">R/A</td><td class="raci-c">C</td><td class="raci-i">I</td></tr>
+        <tr><td>Demand intake &amp; feasibility assessment</td><td class="raci-c">C</td><td class="raci-a">A</td><td class="raci-r">R</td></tr>
+        <tr><td>Solution design &amp; architecture</td><td class="raci-i">I</td><td class="raci-c">C</td><td class="raci-a">A/R</td></tr>
+        <tr><td>AI product development (build)</td><td class="raci-i">I</td><td class="raci-c">C</td><td class="raci-a">A/R</td></tr>
+        <tr><td>UAT &amp; business validation</td><td class="raci-r">R</td><td class="raci-a">A</td><td class="raci-c">C</td></tr>
+        <tr><td>Production deployment &amp; go-live</td><td class="raci-i">I</td><td class="raci-c">C</td><td class="raci-a">A/R</td></tr>
+        <tr><td>Ongoing model monitoring &amp; Ops</td><td class="raci-i">I</td><td class="raci-i">I</td><td class="raci-a">A/R</td></tr>
+        <tr><td>Business KPI tracking &amp; value realisation</td><td class="raci-a">A</td><td class="raci-r">R</td><td class="raci-c">C</td></tr>
+        <tr><td>Regulatory &amp; compliance liaison</td><td class="raci-c">C</td><td class="raci-i">I</td><td class="raci-a">A/R</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:var(--muted);margin-top:4px;"><strong>R</strong> = Responsible · <strong>A</strong> = Accountable · <strong>C</strong> = Consulted · <strong>I</strong> = Informed</p>
+  </div>
+
+  <!-- ══ S3: Org Structure ══ -->
+  <div class="section" id="s3">
+    <div class="section-hd"><span class="sec-num">03</span><h2>Organisational Structure</h2></div>
+
+    <p>The AI COE is structured as a <strong>globally unified organisation with embedded regional functions</strong>. The core leadership and platform/standards functions sit at Group level; delivery capability is allocated across the two location hubs (China and India) with regional liaison functions embedded in HK and SG.</p>
+
+    <div class="org-wrap">
+      <!-- Level 1: Steering -->
+      <div class="org-row center" style="margin-bottom:4px;">
+        <div class="org-node global" style="max-width:480px;">
+          <div class="n-title">🏛️ AI COE Steering Committee</div>
+          <div class="n-sub">Group CTO (Chair) · Group CDO · Regional CTOs (HK + SG) · Group CRO · Group Compliance</div>
+        </div>
+      </div>
+      <div class="org-connector">↕</div>
+      <!-- Level 2: Head of COE -->
+      <div class="org-row center" style="margin-bottom:4px;">
+        <div class="org-node global" style="max-width:400px; background:var(--primary2);">
+          <div class="n-title">👤 Head of AI COE (Global)</div>
+          <div class="n-sub">Full lifecycle accountability · P&amp;L for AI portfolio · Reports to Group CTO</div>
+        </div>
+      </div>
+      <div class="org-connector">↕</div>
+      <!-- Level 3: Functions -->
+      <div class="org-row r4" style="margin-bottom:4px;">
+        <div class="org-node team">
+          <div class="n-title">📐 AI Standards &amp; Architecture</div>
+          <div class="n-sub">Tech standards, design patterns, platform strategy</div>
+          <span class="loc-badge loc-cn">China Hub</span>
+        </div>
+        <div class="org-node team">
+          <div class="n-title">🔧 AI Platform &amp; MLOps</div>
+          <div class="n-sub">Platform build &amp; run, CI/CD, model registry, monitoring</div>
+          <span class="loc-badge loc-in">India Hub</span>
+        </div>
+        <div class="org-node team">
+          <div class="n-title">🛡️ AI Governance &amp; Risk</div>
+          <div class="n-sub">Risk framework, ethics review, regulatory liaison</div>
+          <span class="loc-badge loc-gl">Global (Split)</span>
+        </div>
+        <div class="org-node team">
+          <div class="n-title">🎓 Talent &amp; Knowledge</div>
+          <div class="n-sub">CoP, certification, knowledge management</div>
+          <span class="loc-badge loc-gl">Global (Split)</span>
+        </div>
+      </div>
+      <div class="org-connector">↕</div>
+      <!-- Level 4: Delivery squads -->
+      <div class="org-row r3" style="margin-bottom:4px;">
+        <div class="org-node team">
+          <div class="n-title">⚡ Use Case Delivery Squads</div>
+          <div class="n-sub">Cross-functional: DS · ML Eng · Data Eng · AI PM · BA</div>
+          <span class="loc-badge loc-in">India Hub (Scale)</span>
+          <span class="loc-badge loc-cn" style="margin-left:4px;">China Hub (Innovation)</span>
+        </div>
+        <div class="org-node team" style="border:2px solid #f9a825;">
+          <div class="n-title">🏙️ HK Region Embedded Function</div>
+          <div class="n-sub">HK AI Lead · ZH Bilingual Specialists · HKMA/SFC Liaison · Local QA</div>
+          <span class="loc-badge loc-hk">HK / TW / MO</span>
+        </div>
+        <div class="org-node team">
+          <div class="n-title">🌏 SG Region Embedded Function</div>
+          <div class="n-sub">SG AI Lead · MAS Liaison · ASEAN Market Specialists</div>
+          <span class="loc-badge loc-sg">SG + Global Markets</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hk-box" style="margin-top:24px;">
+      <h4>HK Region Embedded Function — Role Design Rationale</h4>
+      <p>Given HK Region's unique combination of <strong>highest AI maturity + absent governance + Chinese-language operations + distinct regulatory environment</strong> (HKMA, SFC, IA), the embedded function is not merely a liaison role. It is a <strong>mini-COE nucleus</strong> that:</p>
+      <ul>
+        <li>Acts as the primary interface between Global COE and HK/TW/MO business teams, operating in Traditional Chinese</li>
+        <li>Translates and adapts global standards into locally compliant, ZH-language artefacts</li>
+        <li>Leads regulatory engagement with HKMA, SFC, and Insurance Authority</li>
+        <li>Accelerates backlog of existing use cases leveraging HK's existing AI maturity</li>
+        <li>Serves as the governance pilot site — proving the Global+Local model before SG Region rollout</li>
+      </ul>
+    </div>
+
+    <h3>3.1 Headcount Strategy (Indicative)</h3>
+    <table class="tbl">
+      <thead><tr><th>Role Cluster</th><th>Location</th><th>Year 1 FTE</th><th>Year 2 FTE</th><th>Primary Function</th></tr></thead>
+      <tbody>
+        <tr><td>COE Leadership &amp; Function Leads</td><td><span class="badge b-blue">Global</span></td><td>5–6</td><td>6–8</td><td>Strategy, standards, governance oversight</td></tr>
+        <tr><td>AI Delivery Squads (Scale)</td><td><span class="badge b-blue">India Hub</span></td><td>15–20</td><td>30–40</td><td>Use case build, MLOps, data engineering</td></tr>
+        <tr><td>AI Innovation &amp; Architecture</td><td><span class="badge b-red">China Hub</span></td><td>8–10</td><td>12–15</td><td>Architecture, PoC, GenAI research, design</td></tr>
+        <tr><td>HK Region Embedded Function</td><td><span class="badge b-gold">HK + TW</span></td><td>4–5</td><td>6–8</td><td>Localisation, regulatory, ZH delivery lead</td></tr>
+        <tr><td>SG Region Embedded Function</td><td><span class="badge b-green">Singapore</span></td><td>2–3</td><td>4–5</td><td>Regional demand, MAS liaison</td></tr>
+        <tr><td><strong>Total</strong></td><td>—</td><td><strong>34–44</strong></td><td><strong>58–76</strong></td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ S4: Lifecycle ══ -->
+  <div class="section" id="s4">
+    <div class="section-hd"><span class="sec-num">04</span><h2>End-to-End Delivery Lifecycle</h2></div>
+
+    <p>The COE owns the <strong>complete AI product lifecycle</strong> — from the moment a use case enters the pipeline through to ongoing production operations. This is a material shift from the previous project-based model that ended at go-live.</p>
+
+    <div class="lifecycle">
+      <div class="lc-stage">
+        <div class="lc-icon">🔍</div>
+        <div class="lc-name">1. Demand &amp; Assessment</div>
+        <div class="lc-desc">Intake · Feasibility · Risk Tier · Prioritisation</div>
+      </div>
+      <div class="lc-stage">
+        <div class="lc-icon">🏗️</div>
+        <div class="lc-name">2. Solution Design</div>
+        <div class="lc-desc">Architecture · Data Strategy · Reuse Check · Reg Review</div>
+      </div>
+      <div class="lc-stage">
+        <div class="lc-icon">⚙️</div>
+        <div class="lc-name">3. Build &amp; Validate</div>
+        <div class="lc-desc">Develop · Test · Bias Check · UAT · Sign-off</div>
+      </div>
+      <div class="lc-stage">
+        <div class="lc-icon">🚀</div>
+        <div class="lc-name">4. Deploy &amp; Go-Live</div>
+        <div class="lc-desc">CI/CD Pipeline · Production Release · Monitoring Setup</div>
+      </div>
+      <div class="lc-stage">
+        <div class="lc-icon">📊</div>
+        <div class="lc-name">5. Run &amp; Optimise</div>
+        <div class="lc-desc">Model Monitoring · Drift Detection · Retraining · Value Tracking</div>
+      </div>
+    </div>
+
+    <h3>4.1 Stage Detail — Demand &amp; Assessment (Stage 1)</h3>
+    <p>This is where velocity is won or lost. A streamlined intake process is critical given the existing backlog of identified use cases.</p>
+    <div class="grid g3">
+      <div class="card top-blue">
+        <div class="card-label">Intake Channels</div>
+        <div class="card-title">How Demands Enter</div>
+        <ul>
+          <li>Digital Team submits via standard AI Demand Form</li>
+          <li>BU direct submission for strategic initiatives</li>
+          <li>COE-originated (PoC / innovation pipeline)</li>
+          <li>HK: ZH-language form + bilingual COE support</li>
+        </ul>
+      </div>
+      <div class="card top-teal">
+        <div class="card-label">Assessment Criteria</div>
+        <div class="card-title">Feasibility Check</div>
+        <ul>
+          <li>Business value hypothesis &amp; ROI estimate</li>
+          <li>Data availability &amp; quality assessment</li>
+          <li>AI risk tier classification (High / Mid / Low)</li>
+          <li>Existing asset reuse opportunity</li>
+          <li>Regulatory pre-check (region-specific)</li>
+        </ul>
+      </div>
+      <div class="card top-gold">
+        <div class="card-label">Prioritisation</div>
+        <div class="card-title">Backlog Sequencing</div>
+        <ul>
+          <li>Scored on: Value × Feasibility ÷ Risk × Effort</li>
+          <li>Fast-track lane for low-risk, high-reuse use cases</li>
+          <li>HK Region use cases: bilingual scoring brief</li>
+          <li>Reviewed monthly at COE Ops cadence</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>4.2 Stage Detail — Run &amp; Optimise (Stage 5)</h3>
+    <div class="callout green">
+      <span class="callout-icon">♾️</span>
+      <div class="callout-body">
+        <strong>Why Ongoing Ops is a COE Responsibility</strong>
+        <p>In the previous project model, models were "handed off" post go-live with no structured ownership, leading to silent model degradation, undetected drift, and ungoverned retraining. Under the TOM, COE retains <strong>ongoing operational accountability</strong> for all production AI models: monitoring, drift alerts, periodic retraining, performance reviews, and retirement decisions. This is operationalised through India Hub's MLOps team using the centralised platform.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S5: Use Case Factory ══ -->
+  <div class="section" id="s5">
+    <div class="section-hd"><span class="sec-num">05</span><h2>Use Case Factory Model</h2></div>
+
+    <p>The <strong>Use Case Factory</strong> is the COE's core operating mechanism for rapidly and consistently executing the identified AI use case portfolio. It treats use case delivery as a <strong>repeatable industrial process</strong> — not a series of unique projects — enabling velocity, quality, and reuse at scale.</p>
+
+    <div class="factory">
+      <div class="factory-hd">🏭 Use Case Factory — Standard Execution Pipeline</div>
+      <div class="factory-body">
+        <div class="pipeline">
+          <div class="pipe-step hl">
+            <div class="pipe-name">📥 Intake &amp; Triage</div>
+            <div class="pipe-sub">Scored &amp; prioritised within 5 days</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-name">🔍 Reuse Check</div>
+            <div class="pipe-sub">Asset catalogue search first</div>
+          </div>
+          <div class="pipe-step hl">
+            <div class="pipe-name">🧩 Component Assembly</div>
+            <div class="pipe-sub">Compose from shared building blocks</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-name">⚙️ Build &amp; Test</div>
+            <div class="pipe-sub">Standard pipeline + auto-checks</div>
+          </div>
+          <div class="pipe-step hl">
+            <div class="pipe-name">🚀 Deploy</div>
+            <div class="pipe-sub">CI/CD to platform</div>
+          </div>
+          <div class="pipe-step">
+            <div class="pipe-name">♻️ Harvest</div>
+            <div class="pipe-sub">New assets back to catalogue</div>
+          </div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:12px;">
+          <strong>Highlighted stages</strong> are where the Factory model creates the greatest speed advantage: standardised intake reduces assessment time; component assembly avoids rebuild; automated deployment removes manual steps.
+        </p>
+      </div>
+    </div>
+
+    <h3>5.1 Shared Component Library (AI Asset Catalogue)</h3>
+    <p>The Factory depends on a well-maintained catalogue of reusable AI components. The COE owns and governs this catalogue globally; all regions contribute to and draw from it.</p>
+    <div class="grid g3">
+      <div class="card top-blue">
+        <div class="card-label">Layer 1 · Data</div>
+        <div class="card-title">Data &amp; Feature Assets</div>
+        <ul>
+          <li>Certified data connectors (core insurance systems)</li>
+          <li>Reusable feature engineering pipelines</li>
+          <li>Synthetic data generators (for testing)</li>
+          <li>Data quality validation modules</li>
+        </ul>
+      </div>
+      <div class="card top-teal">
+        <div class="card-label">Layer 2 · Model</div>
+        <div class="card-title">Model &amp; Algorithm Assets</div>
+        <ul>
+          <li>Pre-trained base models (insurance domain fine-tuned)</li>
+          <li>Validated ML algorithm templates by use case type</li>
+          <li>LLM prompt libraries (EN + ZH)</li>
+          <li>Model evaluation &amp; bias testing suites</li>
+        </ul>
+      </div>
+      <div class="card top-purple">
+        <div class="card-label">Layer 3 · Application</div>
+        <div class="card-title">Application &amp; Integration Assets</div>
+        <ul>
+          <li>API wrappers for core insurance platforms</li>
+          <li>Standard AI microservice templates</li>
+          <li>Explainability &amp; output formatting components</li>
+          <li>Monitoring &amp; alerting templates</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>5.2 Use Case Tiers &amp; Fast-Track Lanes</h3>
+    <p>Not all use cases are equal. The Factory operates three lanes to match delivery speed with risk profile:</p>
+    <table class="tbl">
+      <thead><tr><th>Lane</th><th>Criteria</th><th>Target Time-to-Production</th><th>Gate Requirements</th><th>HK Relevance</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>🟢 Fast Lane</strong></td>
+          <td>Low risk, high asset reuse (≥70% existing components), internal tool</td>
+          <td><span class="badge b-green">6–10 weeks</span></td>
+          <td>Streamlined checklist; no full AIA</td>
+          <td>Internal analytics, reporting automation</td>
+        </tr>
+        <tr>
+          <td><strong>🟡 Standard Lane</strong></td>
+          <td>Medium risk, partial reuse, customer-facing or operational decision support</td>
+          <td><span class="badge b-gold">12–20 weeks</span></td>
+          <td>Standard AIA, Tech Review, UAT</td>
+          <td>Claims triage, sales recommendation</td>
+        </tr>
+        <tr>
+          <td><strong>🔴 Complex Lane</strong></td>
+          <td>High risk, novel architecture, regulatory-sensitive, underwriting/claims decision automation</td>
+          <td><span class="badge b-red">24–36 weeks</span></td>
+          <td>Full AIA + Ethics Board + Regulator pre-notification</td>
+          <td>Automated underwriting, fraud detection with enforcement action</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="hk-box">
+      <h4>HK Region Use Case Portfolio Acceleration</h4>
+      <p>HK Region enters with the highest AI maturity — meaning many use cases are partially built or piloted but ungoverned. The Factory model addresses this by introducing a <strong>"Retroactive Governance" sprint</strong> for existing HK use cases:</p>
+      <ul>
+        <li><strong>Inventory &amp; triage:</strong> catalogue all existing HK AI systems within 60 days of COE launch</li>
+        <li><strong>Risk-tier all existing systems:</strong> apply standard AIA retrospectively to identify gaps</li>
+        <li><strong>Fast-track compliant systems:</strong> those already meeting standards enter Run &amp; Optimise immediately</li>
+        <li><strong>Remediation backlog:</strong> non-compliant systems assigned to remediation sprints before new use cases are prioritised</li>
+        <li>This approach avoids blocking new use case delivery while systematically closing governance gaps</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ S6: Location Strategy ══ -->
+  <div class="section" id="s6">
+    <div class="section-hd"><span class="sec-num">06</span><h2>Location Strategy — China Innovation Hub &amp; India Scale Hub</h2></div>
+
+    <div class="callout blue">
+      <span class="callout-icon">🗺️</span>
+      <div class="callout-body">
+        <strong>Strategic Rationale</strong>
+        <p>The COE's location strategy exploits the distinct talent and ecosystem strengths of two markets: <strong>China</strong> for high-calibre AI research talent, proximity to HK Region business, and deep domain innovation capability; <strong>India</strong> for large-scale, cost-efficient engineering delivery, strong MLOps &amp; data engineering capability, and proven global delivery model maturity.</p>
+      </div>
+    </div>
+
+    <div class="location-grid">
+      <div class="loc-card china">
+        <div class="flag">🇨🇳</div>
+        <div class="loc-title">China — Innovation Hub</div>
+        <div class="loc-role">Conceptualisation &amp; Innovation</div>
+        <ul>
+          <li><strong>Primary focus:</strong> AI research, architecture design, PoC development, GenAI innovation</li>
+          <li><strong>Key talent:</strong> AI Architects, Research Scientists, Senior Data Scientists, Solution Designers</li>
+          <li><strong>HK Region proximity:</strong> same time zone, cultural proximity, Mandarin/Cantonese bilingual — natural support for HK use case design phase</li>
+          <li><strong>Deliverables owned:</strong> Solution architecture, algorithm selection, PoC build, innovation pipeline, HK-specific design artefacts (ZH)</li>
+          <li><strong>Key differentiator:</strong> Access to China's deep AI talent pool (top universities: Tsinghua, Peking, SJTU) and frontier model ecosystem</li>
+          <li><strong>Governance note:</strong> China Hub operates under COE global standards; data handling must comply with PIPL and cross-border data rules; no HK/TW/MO customer data processed in China without explicit approval</li>
+        </ul>
+      </div>
+      <div class="loc-card india">
+        <div class="flag">🇮🇳</div>
+        <div class="loc-title">India — Scale Delivery Hub</div>
+        <div class="loc-role">Scale Execution &amp; Operations</div>
+        <ul>
+          <li><strong>Primary focus:</strong> Use case build-at-scale, MLOps, data engineering, model monitoring &amp; Ops, platform management</li>
+          <li><strong>Key talent:</strong> ML Engineers, Data Engineers, DevOps/MLOps, QA, AI PMs</li>
+          <li><strong>Scale advantage:</strong> Large English-proficient talent pool, cost-efficient for high-volume delivery, experienced in agile global delivery models</li>
+          <li><strong>Deliverables owned:</strong> Production model development, platform CI/CD, data pipelines, ongoing model monitoring, test automation</li>
+          <li><strong>Key differentiator:</strong> Proven insurance BPO/tech delivery ecosystem; multiple global insurers already operate AI delivery from India</li>
+          <li><strong>Language note:</strong> India Hub operates in English; ZH-specific deliverables for HK Region are designed in China Hub and passed to India Hub for engineering execution with ZH specs</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>6.1 China–India–HK Collaboration Model</h3>
+    <table class="tbl">
+      <thead><tr><th>Use Case Phase</th><th>China Hub Role</th><th>India Hub Role</th><th>HK Embedded Function Role</th></tr></thead>
+      <tbody>
+        <tr><td>Demand Assessment</td><td>—</td><td>Feasibility analysis support</td><td>Leads intake, translates ZH requirements</td></tr>
+        <tr><td>Solution Design</td><td>Leads architecture &amp; algorithm design; produces ZH design docs</td><td>Review &amp; technical input</td><td>Regulatory &amp; localisation review</td></tr>
+        <tr><td>PoC / Prototyping</td><td>Builds PoC; innovation exploration</td><td>—</td><td>Business validation with HK teams (ZH)</td></tr>
+        <tr><td>Production Build</td><td>Architecture support</td><td>Leads engineering, testing, MLOps</td><td>UAT coordination with business (ZH)</td></tr>
+        <tr><td>Deploy &amp; Go-Live</td><td>—</td><td>Leads deployment via CI/CD platform</td><td>Local sign-off; regulator notification if needed</td></tr>
+        <tr><td>Run &amp; Ops</td><td>Innovation on enhancements</td><td>Leads ongoing monitoring &amp; retraining</td><td>Business performance review; local issue escalation</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout gold">
+      <span class="callout-icon">⏱️</span>
+      <div class="callout-body">
+        <strong>Time Zone Management</strong>
+        <p>China (UTC+8) and HK (UTC+8) are fully aligned. India (UTC+5:30) has a 2.5-hour overlap with HK's morning window. For HK-priority use cases, <strong>India Hub delivery squads should be structured for an early-morning start</strong> to maximise the synchronous window with HK. The COE Ops cadence and stand-ups should be scheduled to accommodate the China-India handoff window (09:00–11:30 IST / 11:30–14:00 HKT).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S7: HK Region Deep-Dive ══ -->
+  <div class="section" id="s7">
+    <div class="section-hd"><span class="sec-num">07</span><h2>HK Region Deep-Dive</h2></div>
+
+    <p>The HK Region (covering China Hong Kong, China Taiwan, and China Macao) represents the COE's <strong>highest-priority and most complex operating environment</strong>. It is simultaneously the Group's most AI-mature market and the one most in need of governance formalisation. It is also the designated pilot region for proving the Global+Local operating model.</p>
+
+    <h3>7.1 HK Region Profile</h3>
+    <div class="grid g2">
+      <div class="card top-gold">
+        <div class="card-label">Maturity Assessment</div>
+        <div class="card-title">🏆 Highest AI Maturity</div>
+        <ul>
+          <li>Most AI use cases already deployed or piloted</li>
+          <li>Established AI/Data talent base in region</li>
+          <li>Strong appetite from business for AI expansion</li>
+          <li><strong>Gap:</strong> ungoverned — no unified standards, model documentation, or risk oversight in place</li>
+        </ul>
+      </div>
+      <div class="card top-red">
+        <div class="card-label">Key Challenges</div>
+        <div class="card-title">⚠️ Operating Complexity</div>
+        <ul>
+          <li>Multi-jurisdiction: HKMA + SFC + IA (HK) + FSC (TW) + AMCM (MO)</li>
+          <li>Chinese-language dominant operations; English-only standards = friction</li>
+          <li>No China mainland business (policy constraint) — data flows within HK/TW/MO only</li>
+          <li>Legacy AI systems with unknown risk profiles need retroactive assessment</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>7.2 HK Region Operating Model</h3>
+
+    <div class="hk-box">
+      <h4>HK Region Embedded Function — Team Composition</h4>
+      <p>The HK Embedded Function is the COE's local delivery nerve centre. It is a small but high-impact team designed to bridge global standards with local execution:</p>
+      <ul>
+        <li><strong>HK AI Lead (1 FTE):</strong> Senior AI leader, bilingual (EN/ZH-Traditional), reports to Head of AI COE. Primary interface to HK Digital Team and business. Accountable for all HK use case delivery outcomes.</li>
+        <li><strong>Bilingual AI Business Analyst / Solution Designer (1–2 FTE):</strong> Translates business requirements (ZH) into structured AI design briefs (bilingual EN+ZH) for China Hub. Critical role in preventing requirements-loss-in-translation.</li>
+        <li><strong>HK Governance &amp; Compliance Specialist (1 FTE):</strong> Deep knowledge of HKMA, SFC, IA regulations as they apply to AI. Owns local regulatory calendar, pre-engagement with regulators, and audit readiness.</li>
+        <li><strong>Taiwan / Macao Liaisons (0.5 FTE each or shared):</strong> Part-time embedded contacts in TW and MO, primarily for regulatory and business engagement; leverages HK lead for AI governance.</li>
+      </ul>
+    </div>
+
+    <h3>7.3 HK Regulatory Engagement Model</h3>
+    <table class="tbl">
+      <thead><tr><th>Regulator</th><th>Market</th><th>Key AI-Relevant Requirements</th><th>COE Engagement Owner</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><strong>HKMA</strong></td>
+          <td>China Hong Kong (Banking / Insurance interface)</td>
+          <td>Circular on Use of AI (2023); Model Risk Management; ORSA AI risk disclosure</td>
+          <td>HK Governance Specialist (primary) + Head of COE</td>
+        </tr>
+        <tr>
+          <td><strong>Insurance Authority (IA)</strong></td>
+          <td>China Hong Kong</td>
+          <td>Guideline on Use of AI in Insurance (expected 2024–25); actuarial model oversight</td>
+          <td>HK Governance Specialist + Group CRO</td>
+        </tr>
+        <tr>
+          <td><strong>SFC</strong></td>
+          <td>China Hong Kong (securities-linked products)</td>
+          <td>Circular on AI in investment management; algo trading rules</td>
+          <td>HK Governance Specialist (as applicable)</td>
+        </tr>
+        <tr>
+          <td><strong>FSC</strong></td>
+          <td>China Taiwan</td>
+          <td>Financial Supervisory Commission AI principles; PDPA (TW) data rules</td>
+          <td>TW Liaison + HK Governance Specialist</td>
+        </tr>
+        <tr>
+          <td><strong>AMCM</strong></td>
+          <td>China Macao</td>
+          <td>Autoridade Monetária de Macau prudential guidelines; PDPO equivalent</td>
+          <td>MO Liaison + HK Governance Specialist</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>7.4 HK Region Governance Formalisation Sprint</h3>
+    <p>The COE's first priority in HK Region is not new use case delivery — it is <strong>establishing governance foundations</strong> to unlock safe acceleration. The following 90-day sprint runs in parallel with use case inventory:</p>
+
+    <div class="grid g3">
+      <div class="card top-gold">
+        <div class="card-label">Month 1</div>
+        <div class="card-title">🗂️ Inventory &amp; Triage</div>
+        <ul>
+          <li>Complete catalogue of all existing HK AI systems</li>
+          <li>Apply risk-tier classification to each</li>
+          <li>Identify critical governance gaps</li>
+          <li>Bilingual documentation of all findings</li>
+        </ul>
+      </div>
+      <div class="card top-gold">
+        <div class="card-label">Month 2</div>
+        <div class="card-title">📋 Standards Adoption</div>
+        <ul>
+          <li>Publish HK-adapted global standards (ZH-Traditional)</li>
+          <li>Train HK AI/Data Team on new standards</li>
+          <li>Activate Gate Review process for new projects</li>
+          <li>Establish HKMA/IA engagement calendar</li>
+        </ul>
+      </div>
+      <div class="card top-gold">
+        <div class="card-label">Month 3</div>
+        <div class="card-title">🚦 Remediation &amp; Unlock</div>
+        <ul>
+          <li>High-risk systems: remediation plan in place</li>
+          <li>Compliant systems: formally onboarded to Run &amp; Ops</li>
+          <li>New use case queue: first batch prioritised &amp; sequenced</li>
+          <li>HK Region Governance Dashboard live</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S8: Global + Local Governance ══ -->
+  <div class="section" id="s8">
+    <div class="section-hd"><span class="sec-num">08</span><h2>Global + Local Governance &amp; Standards Framework</h2></div>
+
+    <p>The COE operates a <strong>two-tier standards architecture</strong>: a non-negotiable Global Core Layer that applies everywhere, and a Local Adaptation Layer where regions can extend (never weaken) the global baseline to meet local regulatory and operational requirements.</p>
+
+    <div class="grid g2">
+      <div class="card top-blue">
+        <div class="card-label">Global Core Layer — Non-Negotiable</div>
+        <div class="card-title">🌐 Group-Wide Standards</div>
+        <ul>
+          <li>AI Risk Classification Framework (3 tiers)</li>
+          <li>AI Impact Assessment (AIA) methodology</li>
+          <li>Model documentation standard (Model Card)</li>
+          <li>Responsible AI principles (fairness, explainability, privacy)</li>
+          <li>AI development lifecycle (SDLC) with Gate checkpoints</li>
+          <li>Platform &amp; toolchain requirements</li>
+          <li>Data governance minimum standards</li>
+          <li><em>Language: English (authoritative version)</em></li>
+        </ul>
+      </div>
+      <div class="card top-gold">
+        <div class="card-label">Local Adaptation Layer — HK Region</div>
+        <div class="card-title">🏙️ HK-Specific Extensions</div>
+        <ul>
+          <li>HKMA / IA / SFC regulatory mapping overlay</li>
+          <li>ZH-Traditional versions of all process artefacts</li>
+          <li>PDPO (HK) data handling addendum</li>
+          <li>TW FSC compliance addendum</li>
+          <li>MO AMCM compliance addendum</li>
+          <li>ZH-first model cards for HK-deployed systems</li>
+          <li>Local regulatory engagement protocol</li>
+          <li><em>Language: Traditional Chinese (primary), English (reference)</em></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout purple">
+      <span class="callout-icon">🔑</span>
+      <div class="callout-body">
+        <strong>Design Rule: Local Can Extend, Never Weaken</strong>
+        <p>The Local Adaptation Layer may add stricter requirements above the Global Core (e.g., HK requiring bilingual model cards, or TW requiring additional regulatory pre-approval steps). It may <strong>never reduce or bypass</strong> Global Core requirements. This is the enforcement mechanism that gives the Group governance consistency while allowing regional compliance.</p>
+      </div>
+    </div>
+
+    <h3>8.1 HK as Governance Pilot — Propagation to Other Regions</h3>
+    <p>HK Region is intentionally chosen as the governance pilot because of its AI maturity, making rapid iteration possible. The learnings from HK's Global+Local implementation will be packaged into a <strong>"Region Activation Kit"</strong> for subsequent rollout to SG Region and other markets:</p>
+    <div class="grid g3">
+      <div class="card">
+        <div class="card-label">Kit Component 1</div>
+        <div class="card-title">📦 Standards Package</div>
+        <p>Localised standard templates (adapted from HK model), regulatory mapping worksheet, and compliance checklist for new regions to complete</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Kit Component 2</div>
+        <div class="card-title">🎓 Onboarding Programme</div>
+        <p>Training curriculum for regional embedded functions, including governance processes, platform onboarding, and language/localisation protocols</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Kit Component 3</div>
+        <div class="card-title">📊 Governance Dashboard</div>
+        <p>Pre-built region-level governance dashboard (model inventory, risk status, AIA completion rate, regulatory calendar) deployable within 2 weeks</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ S9: Language Strategy ══ -->
+  <div class="section" id="s9">
+    <div class="section-hd"><span class="sec-num">09</span><h2>Language &amp; Localisation Strategy</h2></div>
+
+    <p>Language is a <strong>structural operating risk</strong> for the HK Region, not a cosmetic issue. A COE operating primarily in English, serving a business environment that operates in Traditional Chinese, will systematically lose speed and quality at every requirements-gathering, documentation, and regulatory-engagement touchpoint. The TOM addresses this structurally.</p>
+
+    <div class="callout warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body">
+        <strong>Risk: Language as a Delivery Bottleneck</strong>
+        <p>Without deliberate structural design, language barriers will manifest as: requirements mistranslation; bilingual team members becoming informal translators (reducing their productive capacity); regulatory submissions that fail on language grounds; and HK business users disengaging from AI systems they don't understand. These are not hypothetical — they are the observed failure modes in comparable global COE deployments.</p>
+      </div>
+    </div>
+
+    <h3>9.1 Bilingual Operating Model for HK Region</h3>
+    <div class="lang-grid">
+      <div class="lang-card en">
+        <div class="lang-flag">🇬🇧</div>
+        <div class="lang-title">English — Global COE Standard</div>
+        <ul>
+          <li>All Global Core standards and policies (authoritative)</li>
+          <li>India Hub deliverables (code, technical docs)</li>
+          <li>COE-wide communications and governance meetings</li>
+          <li>Cross-region reporting and dashboards</li>
+          <li>Vendor and cloud provider engagement</li>
+          <li>International regulatory submissions</li>
+        </ul>
+      </div>
+      <div class="lang-card zh">
+        <div class="lang-flag">🇭🇰</div>
+        <div class="lang-title">Traditional Chinese — HK Region Primary</div>
+        <ul>
+          <li>Business requirements and demand intake (ZH forms)</li>
+          <li>Solution design briefs for HK use cases (bilingual EN+ZH)</li>
+          <li>User-facing AI system outputs and interfaces</li>
+          <li>HKMA / IA / SFC regulatory submissions and responses</li>
+          <li>HK model cards and compliance documentation</li>
+          <li>Training materials for HK business teams</li>
+          <li>HK Governance Dashboard (bilingual)</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>9.2 Language Operating Protocols</h3>
+    <div class="grid g2">
+      <div class="card top-blue">
+        <div class="card-label">Protocol 1</div>
+        <div class="card-title">ZH-First Requirements</div>
+        <p>HK business teams submit AI demand intake in Traditional Chinese. The HK Bilingual BA translates into a structured English brief before passing to COE Global / India Hub. This is a <strong>defined role</strong>, not ad-hoc translation.</p>
+      </div>
+      <div class="card top-teal">
+        <div class="card-label">Protocol 2</div>
+        <div class="card-title">Bilingual Design Artefacts</div>
+        <p>For HK use cases, solution design documents (architecture, data flow, user journey) are produced in <strong>bilingual format</strong> (EN primary, ZH-Traditional alongside) by the China Hub with HK Embedded Function review.</p>
+      </div>
+      <div class="card top-gold">
+        <div class="card-label">Protocol 3</div>
+        <div class="card-title">ZH Regulatory Submissions</div>
+        <p>HKMA, IA and other HK regulator submissions are produced in Traditional Chinese by the HK Governance Specialist. English summaries provided for COE Global governance records. Legal review conducted in ZH.</p>
+      </div>
+      <div class="card top-purple">
+        <div class="card-label">Protocol 4</div>
+        <div class="card-title">LLM / GenAI Language Policy</div>
+        <p>For AI systems deployed in HK with customer-facing NLP components, Traditional Chinese must be a first-class supported language — not a translation of an English output. Model evaluation must include ZH-specific benchmark metrics (ROUGE-ZH, human eval in ZH).</p>
+      </div>
+    </div>
+
+    <h3>9.3 Hiring Criteria for Language-Critical Roles</h3>
+    <table class="tbl">
+      <thead><tr><th>Role</th><th>Language Requirement</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>HK AI Lead</td><td>Native / near-native Traditional Chinese + Business English</td><td>Must be able to represent COE credibly to HKMA in ZH</td></tr>
+        <tr><td>HK Bilingual BA / Solution Designer</td><td>Native Traditional Chinese + Technical English</td><td>Technical translation capability is the core skill — not just bilingualism</td></tr>
+        <tr><td>HK Governance Specialist</td><td>Professional Traditional Chinese + English (regulatory documents in both)</td><td>Experience drafting HKMA / IA submissions in ZH strongly preferred</td></tr>
+        <tr><td>China Hub AI Architects / Designers</td><td>Mandarin (primary) + Technical English</td><td>Must produce bilingual design artefacts; Cantonese a plus for HK alignment</td></tr>
+        <tr><td>India Hub Delivery Engineers</td><td>English (required)</td><td>Must be capable of implementing ZH-specified requirements accurately; ZH literacy not required</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══ S10: Technology ══ -->
+  <div class="section" id="s10">
+    <div class="section-hd"><span class="sec-num">10</span><h2>Technology &amp; Platform Architecture</h2></div>
+
+    <p>The COE operates a <strong>single unified AI platform</strong> deployed in a multi-region topology. The platform is managed centrally by COE's India Hub MLOps team, with region-specific deployment nodes to address data sovereignty requirements.</p>
+
+    <div class="grid g3">
+      <div class="card top-blue">
+        <div class="card-label">Layer 1 · Experimentation</div>
+        <div class="card-title">🔬 Dev &amp; Experimentation</div>
+        <ul>
+          <li>Unified notebook environment (Jupyter / VS Code)</li>
+          <li>Experiment tracking (MLflow / W&amp;B)</li>
+          <li>Feature store (shared + region-partitioned)</li>
+          <li>Data catalogue with lineage</li>
+        </ul>
+      </div>
+      <div class="card top-teal">
+        <div class="card-label">Layer 2 · Production</div>
+        <div class="card-title">🏭 MLOps Pipeline</div>
+        <ul>
+          <li>CI/CD for models (automated training + deploy)</li>
+          <li>Model registry (versioning + approval workflow)</li>
+          <li>Containerised serving (Kubernetes)</li>
+          <li>A/B testing &amp; shadow mode</li>
+        </ul>
+      </div>
+      <div class="card top-purple">
+        <div class="card-label">Layer 3 · Observability</div>
+        <div class="card-title">📡 Model Monitoring</div>
+        <ul>
+          <li>Real-time performance dashboards</li>
+          <li>Data &amp; model drift detection</li>
+          <li>Automated retraining triggers</li>
+          <li>Explainability outputs (SHAP / LIME)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hk-box" style="margin-top:24px;">
+      <h4>HK Region Platform Considerations</h4>
+      <ul>
+        <li><strong>Data residency:</strong> HK Region deployment node hosted in Hong Kong or compliant GBA data centre — HK/TW/MO customer data does not traverse to India Hub or China Hub infrastructure without explicit legal basis</li>
+        <li><strong>ZH-capable LLM endpoint:</strong> COE maintains a dedicated Traditional Chinese-capable LLM endpoint for HK Region use cases (fine-tuned or prompted on ZH-Traditional, not simplified Chinese)</li>
+        <li><strong>HKMA cloud compliance:</strong> Cloud vendor selection and architecture must comply with HKMA's Supervisory Policy Manual on cloud computing; COE maintains the cloud vendor due diligence register for HK</li>
+        <li><strong>Audit trail:</strong> HK platform node maintains local audit logs in compliance with HKMA audit trail requirements; logs accessible by HK Governance Specialist for regulatory inspection readiness</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ══ S11: Roadmap ══ -->
+  <div class="section" id="s11">
+    <div class="section-hd"><span class="sec-num">11</span><h2>Transition Roadmap</h2></div>
+
+    <div class="roadmap">
+      <div class="rm-phase">
+        <div class="rm-ind"><div class="rm-dot filled"></div><div class="rm-line"></div></div>
+        <div class="rm-content">
+          <div class="rm-label">Months 1–3 · Foundation</div>
+          <div class="rm-title">Stand Up &amp; Stabilise</div>
+          <div class="rm-items">
+            <span class="rm-item">TOM formally endorsed</span>
+            <span class="rm-item">COE leadership hired</span>
+            <span class="rm-item">HK Embedded Function in place</span>
+            <span class="rm-item hk">HK AI system inventory (90-day sprint)</span>
+            <span class="rm-item hk">HK governance standards published (ZH)</span>
+            <span class="rm-item">China Hub team mobilised</span>
+            <span class="rm-item">India Hub team mobilised</span>
+            <span class="rm-item">Platform selection finalised</span>
+            <span class="rm-item hk">HKMA engagement initiated</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-phase">
+        <div class="rm-ind"><div class="rm-dot"></div><div class="rm-line"></div></div>
+        <div class="rm-content">
+          <div class="rm-label">Months 4–9 · Activation</div>
+          <div class="rm-title">First Use Cases Live, Factory Operational</div>
+          <div class="rm-items">
+            <span class="rm-item">Use Case Factory pipeline live</span>
+            <span class="rm-item">AI platform MVP deployed</span>
+            <span class="rm-item hk">First 3 HK use cases through Factory (Fast Lane)</span>
+            <span class="rm-item hk">Retroactive AIA for HK legacy systems complete</span>
+            <span class="rm-item">Asset catalogue v1.0 (first 10 components)</span>
+            <span class="rm-item">India Hub delivery squads at target capacity</span>
+            <span class="rm-item hk">HK bilingual documentation standard live</span>
+            <span class="rm-item">COE KPI dashboard operational</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-phase">
+        <div class="rm-ind"><div class="rm-dot"></div><div class="rm-line"></div></div>
+        <div class="rm-content">
+          <div class="rm-label">Months 10–18 · Scale</div>
+          <div class="rm-title">Portfolio Acceleration &amp; SG Region Onboarding</div>
+          <div class="rm-items">
+            <span class="rm-item hk">HK use case backlog: 8–10 in production</span>
+            <span class="rm-item">SG Region Embedded Function activated</span>
+            <span class="rm-item">Region Activation Kit developed (from HK learnings)</span>
+            <span class="rm-item">Asset reuse rate ≥30%</span>
+            <span class="rm-item">Platform full rollout (all use cases on platform)</span>
+            <span class="rm-item hk">HKMA regulatory dialogue established</span>
+            <span class="rm-item">GenAI standards framework published</span>
+            <span class="rm-item">COE Year 1 value report to Executive Committee</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rm-phase">
+        <div class="rm-ind"><div class="rm-dot"></div></div>
+        <div class="rm-content">
+          <div class="rm-label">Year 2–3 · Leadership</div>
+          <div class="rm-title">Full-Scale Operations &amp; Industry Position</div>
+          <div class="rm-items">
+            <span class="rm-item">All regions on standardised COE model</span>
+            <span class="rm-item">AI portfolio ROI quantified and reported</span>
+            <span class="rm-item">Agentic AI &amp; advanced GenAI in delivery pipeline</span>
+            <span class="rm-item hk">HK as Group AI Centre of gravity — new innovations originate here</span>
+            <span class="rm-item">External AI ecosystem partnerships established</span>
+            <span class="rm-item">COE operating model self-reviews and iterates</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:12.5px;color:var(--muted);margin-top:8px;">
+      <span style="background:#fff3cd;color:#6d4c00;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;">HK Region</span> items are highlighted in amber throughout the roadmap.
+    </p>
+  </div>
+
+  <!-- ══ S12: Appendix ══ -->
+  <div class="section" id="s12">
+    <div class="section-hd"><span class="sec-num">12</span><h2>Appendix</h2></div>
+
+    <h3>A. Key Acronyms</h3>
+    <table class="tbl">
+      <thead><tr><th>Term</th><th>Definition</th></tr></thead>
+      <tbody>
+        <tr><td><strong>TOM</strong></td><td>Target Operating Model</td></tr>
+        <tr><td><strong>AIA</strong></td><td>AI Impact Assessment</td></tr>
+        <tr><td><strong>MLOps</strong></td><td>Machine Learning Operations</td></tr>
+        <tr><td><strong>LLMOps</strong></td><td>Large Language Model Operations</td></tr>
+        <tr><td><strong>CoP</strong></td><td>Community of Practice</td></tr>
+        <tr><td><strong>PoC</strong></td><td>Proof of Concept</td></tr>
+        <tr><td><strong>HKMA</strong></td><td>Hong Kong Monetary Authority</td></tr>
+        <tr><td><strong>IA</strong></td><td>Insurance Authority (Hong Kong)</td></tr>
+        <tr><td><strong>SFC</strong></td><td>Securities and Futures Commission (Hong Kong)</td></tr>
+        <tr><td><strong>FSC</strong></td><td>Financial Supervisory Commission (Taiwan)</td></tr>
+        <tr><td><strong>AMCM</strong></td><td>Autoridade Monetária de Macau</td></tr>
+        <tr><td><strong>MAS</strong></td><td>Monetary Authority of Singapore</td></tr>
+        <tr><td><strong>PDPO</strong></td><td>Personal Data (Privacy) Ordinance (Hong Kong)</td></tr>
+        <tr><td><strong>PIPL</strong></td><td>Personal Information Protection Law (China)</td></tr>
+        <tr><td><strong>ZH / ZH-Traditional</strong></td><td>Traditional Chinese (used in HK, TW, MO)</td></tr>
+        <tr><td><strong>BU</strong></td><td>Business Unit</td></tr>
+        <tr><td><strong>BA</strong></td><td>Business Analyst</td></tr>
+      </tbody>
+    </table>
+
+    <h3>B. Open Questions for Stakeholder Resolution</h3>
+    <div class="callout gold">
+      <span class="callout-icon">❓</span>
+      <div class="callout-body">
+        <strong>Items Requiring Executive Decision</strong>
+        <p>The following design choices have been made with stated assumptions; they should be reviewed and confirmed by the COE Steering Committee at charter approval:</p>
+      </div>
+    </div>
+    <ol style="padding-left:22px;margin-top:12px;">
+      <li style="margin:8px 0;"><strong>China Hub data policy:</strong> Confirm that HK/TW/MO customer data cannot be processed in China Hub under any circumstance, or define the permissible data classification boundary. This affects use case design for HK.</li>
+      <li style="margin:8px 0;"><strong>HK Embedded Function reporting line:</strong> Does HK AI Lead report to Head of AI COE (globally consistent) or to HK Regional CTO (stronger local accountability)? Recommendation is a dual reporting line.</li>
+      <li style="margin:8px 0;"><strong>India Hub vendor model:</strong> Is India Hub an internal headcount build, a strategic outsourcing arrangement, or a hybrid? The TOM is designed to accommodate all three but the governance model differs.</li>
+      <li style="margin:8px 0;"><strong>Language authority:</strong> In the event of conflict between English (global standard) and ZH (local adaptation) documentation, which is authoritative for regulatory purposes in HK? Recommendation: ZH-Traditional for local regulatory submissions; English for Group governance records.</li>
+      <li style="margin:8px 0;"><strong>HK legacy system remediation timeline:</strong> Are there any politically sensitive HK AI systems where retroactive AIA may surface findings that require executive-level handling?</li>
+    </ol>
+
+    <h3>C. Document Version History</h3>
+    <table class="tbl">
+      <thead><tr><th>Version</th><th>Date</th><th>Changes</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>v0.1</td><td>June 2026</td><td>Initial draft — for stakeholder review and discussion</td><td><span class="badge b-gold">DRAFT</span></td></tr>
+        <tr><td>v1.0</td><td>TBD</td><td>Post-Steering Committee review; open questions resolved</td><td><span class="badge b-blue">PENDING</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="doc-footer">
+    <div>
+      <strong>AI COE Target Operating Model</strong> · Multinational Insurance Group<br>
+      Confidential — For Internal Stakeholder Review Only
+    </div>
+    <div style="text-align:right;">
+      <span style="background:var(--tag-bg);color:var(--tag-text);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;">v0.1 DRAFT</span><br>
+      <span style="margin-top:4px;display:block;font-size:12px;">June 2026</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
